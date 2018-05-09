@@ -1,5 +1,8 @@
 package com.sksamuel.elastic4s.search.suggestions
 
+import com.sksamuel.elastic4s.analyzers.{CustomAnalyzerDefinition, StandardAnalyzerDefinition}
+import com.sksamuel.elastic4s.json.XContentFactory
+import com.sksamuel.elastic4s.searches.suggestion.Generator
 import com.sksamuel.elastic4s.{ElasticDsl, Indexable}
 import com.sksamuel.elastic4s.testkit.{DiscoveryLocalNodeProvider, ElasticSugar}
 import org.elasticsearch.search.suggest.phrase.DirectCandidateGeneratorBuilder
@@ -14,37 +17,59 @@ class PhraseSuggestionsTest extends WordSpec with Matchers with ElasticSugar wit
   private val Index = "phrasesuggest"
   private val indexType = Index / "music"
 
-  client.execute {
-    createIndex(Index).mappings(
-      mapping("music").fields(
-        textField("name")
-      )
-    ).indexSetting("number_of_shards", 1) // suggestions may be distributed among multiple shards and not be returned
-  }.await
+//  http.execute {
+//    createIndex(Index).mappings(
+//      mapping("music").fields(
+//        textField("name")
+//      )
+//    ).indexSetting("number_of_shards", 1) // suggestions may be distributed among multiple shards and not be returned
+//  }.await
 
-  client.execute(
-    bulk(
-      indexInto(indexType) doc Song("Rocket Man", "Kate Bush"),
-      indexInto(indexType) doc Song("Rubberband Girl", "Kate Bush"),
-      indexInto(indexType) doc Song("Running Up that Hill", "Kate Bush"),
-      indexInto(indexType) doc Song("The Fog", "Kate Bush"),
-      indexInto(indexType) doc Song("The Red Shoes", "Kate Bush"),
-      indexInto(indexType) doc Song("The Dreaming", "Kate Bush"),
-      indexInto(indexType) doc Song("The Big Sky", "Kate Bush")
-    ).immediateRefresh()
-  ).await
+//  http.execute(
+//    bulk(
+//      indexInto(indexType) doc Song("Rocket Man", "Kate Bush"),
+//      indexInto(indexType) doc Song("Rubberband Girl", "Kate Bush"),
+//      indexInto(indexType) doc Song("Running Up that Hill", "Kate Bush"),
+//      indexInto(indexType) doc Song("The Fog", "Kate Bush"),
+//      indexInto(indexType) doc Song("The Red Shoes", "Kate Bush"),
+//      indexInto(indexType) doc Song("The Dreaming", "Kate Bush"),
+//      indexInto(indexType) doc Song("The Big Sky", "Kate Bush")
+//    ).immediateRefresh()
+//  ).await
 
   "phrase suggestions" should {
     "support maxErrors" in {
+      val directCandidateGenerators =
+        Seq(
+          Generator("test", "whoot")
+//          new DirectCandidateGeneratorBuilder("didyoumeansearchables.trigram").suggestMode("always"),
+//          new DirectCandidateGeneratorBuilder("didyoumeansearchables.reverse")
+//            .suggestMode("always")
+//            .preFilter("dym_phrase_reverse")
+//            .postFilter("dym_phrase_reverse")
+        )
+      println(
+        http.show(search(indexType).suggestions {
+          phraseSuggestion("phrase_dym_suggestion")
+            .on("didyoumeansearchables.trigram")
+            .text("miss atam")
+            .size(10)
+            .gramSize(3)
+            .realWordErrorLikelihood(.9f)
+            .confidence(1.0f)
+            .addCandidateGenerator(directCandidateGenerators)
+        })
+      )
 
-      val resp = client.execute {
-        search(indexType).suggestions {
-          phraseSuggestion("a").on("name").text("Rebberband Gril").maxErrors(2.0f)
-        }
-      }.await
 
-      val entry = resp.suggestion("a").entries.head
-      entry.optionsText shouldBe List("rubberband girl", "rubberband gril", "rebberband girl")
+//      val resp = http.execute {
+//        search(indexType).suggestions {
+//          phraseSuggestion("a").on("name").text("Rebberband Gril").maxErrors(2.0f)
+//        }
+//      }.await
+//
+//      val entry = resp.suggestion("a").entries.head
+//      entry.optionsText shouldBe List("rubberband girl", "rubberband gril", "rebberband girl")
     }
 
     "support directCandidateGenerator with minWordLength" ignore {

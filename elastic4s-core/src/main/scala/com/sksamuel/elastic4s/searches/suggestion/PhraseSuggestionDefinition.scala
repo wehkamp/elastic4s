@@ -4,33 +4,48 @@ import com.sksamuel.elastic4s.json.XContentFactory
 import com.sksamuel.elastic4s.script.ScriptDefinition
 import com.sksamuel.exts.OptionImplicits._
 
-case class PhraseSuggestionDefinition(name: String,
-                                      fieldname: String,
-                                      analyzer: Option[String] = None,
-                                      collateParams: Map[String, AnyRef] = Map.empty,
-                                      collatePrune: Option[Boolean] = None,
-                                      collateQuery: Option[ScriptDefinition] = None,
-                                      confidence: Option[Float] = None,
-                                      forceUnigrams: Option[Boolean] = None,
-                                      gramSize: Option[Int] = None,
-                                      preTag: Option[String] = None,
-                                      postTag: Option[String] = None,
-                                      maxErrors: Option[Float] = None,
-                                      realWordErrorLikelihood: Option[Float] = None,
-                                      separator: Option[String] = None,
-                                      tokenLimit: Option[Int] = None,
-                                      size: Option[Int] = None,
-                                      shardSize: Option[Int] = None,
-                                      text: Option[String] = None
-                                     ) extends SuggestionDefinition {
+
+case class CandidateGenerator(
+  generators: Seq[Generator]
+)
+case class Generator(
+  field: String,
+  suggestMode: String,
+  preFilter: Option[String] = None,
+  postFilter: Option[String] = None
+)
+
+case class PhraseSuggestionDefinition(
+   name: String,
+  fieldname: String,
+  analyzer: Option[String] = None,
+  collateParams: Map[String, AnyRef] = Map.empty,
+  collatePrune: Option[Boolean] = None,
+  collateQuery: Option[ScriptDefinition] = None,
+  confidence: Option[Float] = None,
+  forceUnigrams: Option[Boolean] = None,
+  gramSize: Option[Int] = None,
+  preTag: Option[String] = None,
+  postTag: Option[String] = None,
+  maxErrors: Option[Float] = None,
+  realWordErrorLikelihood: Option[Float] = None,
+  separator: Option[String] = None,
+  tokenLimit: Option[Int] = None,
+  size: Option[Int] = None,
+  shardSize: Option[Int] = None,
+  text: Option[String] = None,
+  candidateGenerator: Option[CandidateGenerator] = None
+) extends SuggestionDefinition {
 
   override def analyzer(analyzer: String): PhraseSuggestionDefinition = copy(analyzer = analyzer.some)
   override def text(text: String): PhraseSuggestionDefinition = copy(text = text.some)
   override def size(size: Int): PhraseSuggestionDefinition = copy(size = size.some)
   override def shardSize(shardSize: Int): PhraseSuggestionDefinition = copy(shardSize = shardSize.some)
 
-  //  def addCandidateGenerator(generator: CandidateGenerator): PhraseSuggestionDefinition =
-  //    copy(candidateGenerator = generator.some)
+  //NOTE: this function is a quick hack to get some kind of implementation of a candidate generator
+  // The real solution would be to move away from this forked version and move back to a stable release.
+  def addCandidateGenerator(generators: Seq[Generator]): PhraseSuggestionDefinition =
+    copy(candidateGenerator = CandidateGenerator(generators).some)
 
   def collateParams(collateParams: Map[String, AnyRef]): PhraseSuggestionDefinition = copy(collateParams = collateParams)
 

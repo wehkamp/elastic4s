@@ -3,8 +3,8 @@ package com.sksamuel.elastic4s.searches.suggestions
 import com.sksamuel.elastic4s.searches.suggestion.PhraseSuggestionDefinition
 import org.elasticsearch.search.suggest.SuggestBuilders
 import org.elasticsearch.search.suggest.phrase.PhraseSuggestionBuilder
-
 import scala.collection.JavaConverters._
+
 
 object PhraseSuggestionBuilderFn {
 
@@ -17,7 +17,7 @@ object PhraseSuggestionBuilderFn {
     sugg.text.foreach(builder.text)
 
     sugg.analyzer.foreach(builder.analyzer)
-    // sugg.candidateGenerator.foreach(builder.addCandidateGenerator)
+//    sugg.candidateGenerator.foreach(x => x.foreach(builder.addCandidateGenerator))
     builder.collateParams(sugg.collateParams.asJava)
     sugg.collatePrune.foreach(builder.collatePrune)
     //  sugg.collateQuery.foreach(builder.collateQuery)
