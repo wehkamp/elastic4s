@@ -20,6 +20,7 @@ case class SuggestionResult(text: String,
                             length: Int,
                             options: Seq[SuggestionOption]) {
   def toTerm: TermSuggestionResult = TermSuggestionResult(text, offset, length, options)
+  def toPhrase: PhraseSuggestionResult = PhraseSuggestionResult(options.map(x => SuggestionEntry(x.text)))
 }
 
 case class TermSuggestionResult(text: String,
