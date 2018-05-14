@@ -1,3 +1,4 @@
+//resolvers += Resolver.url("blaze-plugin-releases", url("https://dl.bintray.com/blaze-plugins/releases"))(Resolver.ivyStylePatterns)
 resolvers += Classpaths.sbtPluginReleases
 
 addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.6.0")
@@ -11,3 +12,5 @@ addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.3")
 // documentation
 addSbtPlugin("com.fortysevendeg"  % "sbt-microsites" % "0.4.0")
 addSbtPlugin("com.eed3si9n" % "sbt-unidoc" % "0.4.0")
+
+//addSbtPlugin("rfs.blaze" %% "sbt-blaze" % "1.5.5")

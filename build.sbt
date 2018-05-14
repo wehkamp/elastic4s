@@ -254,3 +254,6 @@ lazy val noPublishSettings = Seq(
   publishLocal := (),
   publishArtifact := false
 )
+
+publishTo := Some("Blaze releases" at "https://wehkamp.jfrog.io/wehkamp/artifactory/blaze-releases/")
+credentials += Credentials("Blaze releases", "localhost", "rodhaan", "@#KOEkameel101")
