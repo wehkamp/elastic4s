@@ -1,4 +1,3 @@
-import com.typesafe.sbt.pgp.PgpKeys
 import sbt._
 import sbt.plugins.JvmPlugin
 import sbt.Keys._
@@ -48,7 +47,7 @@ object Build extends AutoPlugin {
     parallelExecution := false,
     parallelExecution in ThisBuild := false,
     concurrentRestrictions in Global += Tags.limit(Tags.Test, 1),
-    sbtrelease.ReleasePlugin.autoImport.releasePublishArtifactsAction := PgpKeys.publishSigned.value,
+//    sbtrelease.ReleasePlugin.autoImport.releasePublishArtifactsAction := PgpKeys.publishSigned.value,
     sbtrelease.ReleasePlugin.autoImport.releaseCrossBuild := true,
     scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8"),
     javacOptions := Seq("-source", "1.7", "-target", "1.7"),
