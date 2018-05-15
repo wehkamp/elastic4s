@@ -58,13 +58,15 @@ object Build extends AutoPlugin {
       "org.mockito"                           % "mockito-all"               % MockitoVersion        % "test",
       "org.scalatest"                         %% "scalatest"                % ScalatestVersion      % "test"
     ),
-    publishTo := {
-      val nexus = "https://oss.sonatype.org/"
-      if (version.value.trim.endsWith("SNAPSHOT"))
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    },
+//    publishTo := {
+//      val nexus = "https://oss.sonatype.org/"
+//      if (version.value.trim.endsWith("SNAPSHOT"))
+//        Some("snapshots" at nexus + "content/repositories/snapshots")
+//      else
+//        Some("releases" at nexus + "service/local/staging/deploy/maven2")
+//    },
+    publishTo := Some(MavenRepository("Blaze releases", "https://wehkamp.artifactoryonline.com/wehkamp/blaze-releases")),
+    credentials += Credentials("Artifactory Realm", "wehkamp.artifactoryonline.com", "rodhaan", "@#KOEkameel101"),
     pomExtra := {
       <url>https://github.com/sksamuel/elastic4s</url>
         <licenses>
