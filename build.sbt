@@ -255,5 +255,5 @@ lazy val noPublishSettings = Seq(
   publishArtifact := false
 )
 
-publishTo := Some("Blaze releases" at "https://wehkamp.jfrog.io/wehkamp/artifactory/blaze-releases/")
-credentials += Credentials("Blaze releases", "localhost", "rodhaan", "@#KOEkameel101")
+publishTo := Some(MavenRepository("Blaze releases", "https://wehkamp.artifactoryonline.com/wehkamp/blaze-releases"))
+credentials += Credentials("Artifactory Realm", "wehkamp.artifactoryonline.com", "rodhaan", "@#KOEkameel101")
