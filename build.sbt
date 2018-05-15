@@ -213,7 +213,7 @@ lazy val docsMappingsAPIDir = settingKey[String]("Name of subdirectory in site t
 lazy val docs = project
   .in(file("docs"))
   .enablePlugins(MicrositesPlugin, ScalaUnidocPlugin)
-  .settings(ghpages.settings)
+//  .settings(ghpages.settings)
   .settings(noPublishSettings)
   .settings(
     micrositeName := "Elastic4s",
