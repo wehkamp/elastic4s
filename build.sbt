@@ -1,4 +1,4 @@
-import com.typesafe.sbt.SbtGhPages.GhPagesKeys._
+//import com.typesafe.sbt.SbtGhPages.GhPagesKeys._
 import microsites.ExtraMdFileConfig
 
 lazy val root = Project("elastic4s", file("."))
@@ -241,7 +241,7 @@ lazy val docs = project
     autoAPIMappings := true,
     docsMappingsAPIDir := "api",
     addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), docsMappingsAPIDir),
-    ghpagesNoJekyll := false,
+//    ghpagesNoJekyll := false,
     fork in tut := false,
     fork in (ScalaUnidoc, unidoc) := false,
     includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md",

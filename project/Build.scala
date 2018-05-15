@@ -19,7 +19,7 @@ object Build extends AutoPlugin {
     val Json4sVersion = "3.5.1"
     val SprayJsonVersion = "1.3.3"
     val Log4jVersion = "2.6.2"
-    val LuceneVersion = "7.0.0-snapshot-89f6d17"
+    val LuceneVersion = "7.0.0"
     val MockitoVersion = "1.9.5"
     val PlayJsonVersion = "2.6.0-M7"
     val ReactiveStreamsVersion = "1.0.0"
@@ -40,7 +40,7 @@ object Build extends AutoPlugin {
     crossScalaVersions := Seq("2.11.8", "2.12.2"),
     publishMavenStyle := true,
     resolvers += Resolver.mavenLocal,
-    resolvers += "Elasticsearch Lucene Snapshots" at "https://download.elasticsearch.org/lucenesnapshots/89f6d17",
+//    resolvers += "Elasticsearch Lucene Snapshots" at "https://download.elasticsearch.org/lucenesnapshots/89f6d17",
     javaOptions ++= Seq("-Xms512M", "-Xmx2048M", "-XX:MaxPermSize=2048M", "-XX:+CMSClassUnloadingEnabled"),
     publishArtifact in Test := false,
     fork := false,
