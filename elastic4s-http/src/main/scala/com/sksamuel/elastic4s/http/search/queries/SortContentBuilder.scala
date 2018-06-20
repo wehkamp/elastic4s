@@ -9,7 +9,7 @@ object SortContentBuilder {
     case fs: FieldSortDefinition => FieldSortContentBuilder(fs)
     case gs: GeoDistanceSortDefinition => GeoDistanceSortContentBuilder(gs)
     case ss: ScoreSortDefinition => ScoreSortContentBuilder(ss)
-    case ss: ScriptSortDefinition => ???
+    case ss: ScriptSortDefinition => ScriptSortContentBuilder(ss)
   }
 }
 
@@ -64,5 +64,27 @@ object GeoDistanceSortContentBuilder {
     geo.nestedFilter.map(QueryBuilderFn.apply).map(_.string).foreach(builder.rawField("nested_filter", _))
 
     builder
+  }
+}
+
+object ScriptSortContentBuilder {
+  def apply(scriptSort: ScriptSortDefinition): XContentBuilder = {
+
+    val builder = XContentFactory.jsonBuilder().startObject("_script")
+
+    builder.startObject("script")
+    builder.field(scriptSort.script.scriptType.toString.toLowerCase, scriptSort.script.script)
+    builder.field("lang", scriptSort.script.lang.getOrElse("painless"))
+    if (scriptSort.script.params.nonEmpty)
+      builder.autofield("params", scriptSort.script.params)
+    builder.endObject()
+
+    builder.field("type", scriptSort.scriptSortType.toString.toLowerCase)
+
+    scriptSort.order.map(a => builder.field("order", EnumConversions.order(a)))
+    scriptSort.sortMode.map(a => builder.field("mode", EnumConversions.sortMode(a)))
+    scriptSort.nestedPath.map(a => builder.field("nested_path", a))
+
+    builder.endObject()
   }
 }
