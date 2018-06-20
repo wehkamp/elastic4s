@@ -1,1 +1,1 @@
-version in ThisBuild := "6.0.0-wehkamp-2"
+version in ThisBuild := "6.0.0-wehkamp-3"
